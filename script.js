@@ -12,17 +12,16 @@ buttons.forEach((button) => {
     switch (buttonText) {
       case "AC":
         // Clear the display
-        console.log('CLEAR');
         display.value = "";
         break;
       case "DEL":
         // Delete the last character
-        console.log('DELETE');
         display.value = display.value.slice(0, -1);
         break;
       case "=":
         // Perform calculation and display the result
-        display.value = calculateResult(display.value); // (NOT WORKING YET)
+        const result = calculateResult(display.value);
+        display.value = result !== "Error" ? result : "Invalid input";
         break;
       default:
         // Append the button text to the display
@@ -47,29 +46,82 @@ function multiply(a, b) {
 
 function divide(a, b) {
   if (b === 0) {
-    return 'Error: Division by zero!';
+    return "Error: Division by zero!";
   }
   return a / b;
 }
 
-let operator = '';
-let firstNumber = '';
-let secondNumber = '';
+// Calculation logic
+function calculateResult(expression) {
+  try {
+    const operators = {
+      "+": add,
+      "-": subtract,
+      "x": multiply, 
+      "/": divide,
+    };
 
-function operate(operator, a, b) {
-  switch (operator) {
-    case '+':
-      return add(a, b);
-    case '-':
-      return subtract(a, b);
-    case '*':
-      return multiply(a, b);
-    case '/':
-      return divide(a, b);
-    default:
-      return 'Invalid operator';
+    const tokens = expression.match(/\d+|\+|\-|\x|\//g);
+
+    // Handle invalid expressions
+    if (!tokens) {
+      return "Error";
+    }
+
+    const numbers = [];
+    const operatorsStack = [];
+
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i];
+
+      if (operators[token]) {
+        // Token is an operator
+        while (
+          operatorsStack.length > 0 &&
+          operatorsStack[operatorsStack.length - 1] !== "(" &&
+          operators[token](numbers[numbers.length - 2], numbers[numbers.length - 1]) !== undefined
+        ) {
+          const operator = operatorsStack.pop();
+          const b = numbers.pop();
+          const a = numbers.pop();
+          const result = operators[operator](a, b);
+          numbers.push(result);
+        }
+
+        operatorsStack.push(token);
+      } else if (token === "(") {
+        // Token is an opening parenthesis
+        operatorsStack.push(token);
+      } else if (token === ")") {
+        // Token is a closing parenthesis
+        while (operatorsStack[operatorsStack.length - 1] !== "(") {
+          const operator = operatorsStack.pop();
+          const b = numbers.pop();
+          const a = numbers.pop();
+          const result = operators[operator](a, b);
+          numbers.push(result);
+        }
+        operatorsStack.pop(); // Remove the opening parenthesis
+      } else {
+        // Token is a number
+        numbers.push(parseFloat(token));
+      }
+    }
+
+    while (operatorsStack.length > 0) {
+      const operator = operatorsStack.pop();
+      const b = numbers.pop();
+      const a = numbers.pop();
+      const result = operators[operator](a, b);
+      numbers.push(result);
+    }
+
+    if (numbers.length === 1 && Number.isFinite(numbers[0])) {
+      return numbers[0].toString();
+    } else {
+      return "Error";
+    }
+  } catch (error) {
+    return "Error";
   }
 }
-
-console.log(operate('+', 3, 7));
-
