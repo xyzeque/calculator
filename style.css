@@ -45,13 +45,35 @@ main {
   border-radius: 16px;
 }
 
-.display {
+/* .display {
   height: 100px;
   width: 475px;
   background-color: var(--primary);
   color: var(--text_dark);
   border-radius: 8px;
   margin: 16px;
+} */
+
+.display input {
+  height: 100px;
+  width: 440px;
+  padding: 0 16px;
+  margin: 16px;  
+  font-family: monospace;
+  color: var(--background);
+  font-weight: bold;
+  font-size: 24px;
+  text-align: right;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  background-color: var(--primary);
+}
+
+.display input:focus {
+  /* Customize the border when the input is focused */
+  border: 1px solid var(--secondary);
+  box-shadow: 0px 0px 4px rgba(108, 9, 195, 0.5);
 }
 
 .btn {
