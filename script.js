@@ -1,4 +1,38 @@
-// math functions
+// Get references to the necessary elements
+const display = document.getElementById("result");
+const buttons = document.querySelectorAll(".btn");
+
+// Add event listeners to buttons
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    // Get the clicked button's text
+    const buttonText = button.textContent;
+
+    // Perform the corresponding action based on the button text
+    switch (buttonText) {
+      case "AC":
+        // Clear the display
+        console.log('CLEAR');
+        display.value = "";
+        break;
+      case "DEL":
+        // Delete the last character
+        console.log('DELETE');
+        display.value = display.value.slice(0, -1);
+        break;
+      case "=":
+        // Perform calculation and display the result
+        display.value = calculateResult(display.value); // (NOT WORKING YET)
+        break;
+      default:
+        // Append the button text to the display
+        display.value += buttonText;
+        break;
+    }
+  });
+});
+
+// Math Functions
 function add(a, b) {
   return a + b;
 }
@@ -18,12 +52,6 @@ function divide(a, b) {
   return a / b;
 }
 
-
-console.log(add(6,9));
-console.log(subtract(6,9));
-console.log(multiply(6,9));
-console.log(divide(6,9));
-
 let operator = '';
 let firstNumber = '';
 let secondNumber = '';
@@ -42,4 +70,6 @@ function operate(operator, a, b) {
       return 'Invalid operator';
   }
 }
+
+console.log(operate('+', 3, 7));
 
