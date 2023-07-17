@@ -136,6 +136,12 @@ function calculateResult(expression) {
 document.addEventListener("keydown", (event) => {
   const key = event.key;
 
+  // Check if the expression is invalid
+  if (display.value === "Invalid input") {
+    // If invalid, clear the display before appending new input
+    display.value = "";
+  }
+
   if (key >= "0" && key <= "9") {
     // Number key pressed
     display.value += key;
