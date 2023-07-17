@@ -132,3 +132,31 @@ function calculateResult(expression) {
     return "Error";
   }
 }
+
+document.addEventListener("keydown", (event) => {
+  const key = event.key;
+
+  if (key >= "0" && key <= "9") {
+    // Number key pressed
+    display.value += key;
+  } else if (key === ".") {
+    // Decimal point key pressed
+    if (!display.value.includes(".")) {
+      display.value += key;
+    }
+  } else if (key === "+" || key === "-" || key === "x" || key === "/") {
+    // Operator key pressed
+    display.value += key;
+  } else if (key === "Enter") {
+    // Enter key pressed (evaluate expression)
+    const result = calculateResult(display.value);
+    display.value = result !== "Error" ? result : "Invalid input";
+  } else if (key === "Backspace") {
+    // Backspace key pressed (delete last character)
+    display.value = display.value.slice(0, -1);
+  } else if (key === "Tab") {
+    // CLear all
+    display.value = '';
+  }
+});
+
