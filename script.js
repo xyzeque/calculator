@@ -70,7 +70,7 @@ function calculateResult(expression) {
       "/": divide,
     };
 
-    const tokens = expression.match(/\d+|\+|\-|\x|\//g);
+    const tokens = expression.match(/\d+(\.\d+)?|\+|\-|\x|\//g);
 
     // Handle invalid expressions
     if (!tokens) {
