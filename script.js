@@ -1,7 +1,6 @@
 // Get references to the necessary elements
 const display = document.getElementById("result");
 const buttons = document.querySelectorAll(".btn");
-const decimalButton = document.getElementById("decimal");
 
 // Add event listeners to buttons
 buttons.forEach((button) => {
@@ -19,6 +18,13 @@ buttons.forEach((button) => {
         // Delete the last character
         display.value = display.value.slice(0, -1);
         break;
+      case ".":
+        // Check if there is already a decimal point in the display
+        if (!display.value.includes(".")) {
+          // Append the decimal point to the display
+          display.value += ".";
+        }
+        break;
       case "=":
         // Perform calculation and display the result
         const result = calculateResult(display.value);
@@ -30,14 +36,6 @@ buttons.forEach((button) => {
         break;
     }
   });
-});
-
-decimalButton.addEventListener("click", () => {
-  // Check if there is already a decimal point in the display
-  if (!display.value.includes(".")) {
-    // Append the decimal point to the display
-    display.value += ".";
-  }
 });
 
 // Math Functions
